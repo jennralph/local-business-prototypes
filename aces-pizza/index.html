@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ace's Pizza — Williamsburg, Brooklyn</title>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #111111;
+      --dark: #1a1a1a;
+      --card: #222222;
+      --red: #e63b2e;
+      --orange: #f07030;
+      --white: #f5f5f5;
+      --muted: #999999;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 48px;
+      background: rgba(17,17,17,0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid #2a2a2a;
+    }
+    .nav-logo {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--white);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--red); }
+    nav a.nav-cta {
+      background: var(--red);
+      color: var(--white);
+      padding: 10px 22px;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      text-decoration: none;
+      letter-spacing: 0.5px;
+      transition: background 0.2s;
+    }
+    nav a.nav-cta:hover { background: var(--orange); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      padding: 120px 48px 80px;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: url('https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=1400&q=80') center/cover no-repeat;
+      filter: brightness(0.25);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 700px;
+    }
+    .hero-tag {
+      display: inline-block;
+      background: var(--red);
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 2px;
+      margin-bottom: 24px;
+    }
+    h1 {
+      font-family: 'Oswald', sans-serif;
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      font-weight: 700;
+      line-height: 1.05;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 20px;
+    }
+    h1 span { color: var(--red); }
+    .hero-sub {
+      font-size: 1.15rem;
+      color: #cccccc;
+      font-weight: 300;
+      margin-bottom: 40px;
+      max-width: 500px;
+    }
+    .btn-group { display: flex; gap: 16px; flex-wrap: wrap; }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--red);
+      color: white;
+      padding: 16px 32px;
+      border-radius: 4px;
+      font-size: 1rem;
+      font-weight: 600;
+      text-decoration: none;
+      letter-spacing: 0.5px;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn-primary:hover { background: var(--orange); transform: translateY(-1px); }
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      color: var(--white);
+      padding: 16px 32px;
+      border-radius: 4px;
+      border: 1px solid #444;
+      font-size: 1rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-secondary:hover { border-color: var(--red); color: var(--red); }
+    .hero-stats {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      gap: 48px;
+      margin-top: 64px;
+    }
+    .stat { text-align: left; }
+    .stat-num {
+      font-family: 'Oswald', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--red);
+    }
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ── SECTIONS SHARED ── */
+    section { padding: 96px 48px; }
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 12px;
+    }
+    h2 {
+      font-family: 'Oswald', sans-serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 48px;
+    }
+
+    /* ── MENU ── */
+    #menu { background: var(--dark); }
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+    .menu-card {
+      background: var(--card);
+      border-radius: 8px;
+      overflow: hidden;
+      transition: transform 0.2s;
+    }
+    .menu-card:hover { transform: translateY(-4px); }
+    .menu-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      filter: brightness(0.9);
+    }
+    .menu-card-body { padding: 20px; }
+    .menu-item-name {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+    .menu-item-desc {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .menu-tag {
+      display: inline-block;
+      margin-top: 12px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--red);
+      border: 1px solid var(--red);
+      padding: 3px 10px;
+      border-radius: 2px;
+    }
+
+    /* ── ABOUT ── */
+    #about {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      padding: 96px 48px;
+    }
+    .about-img {
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+    }
+    .about-img img {
+      width: 100%;
+      height: 480px;
+      object-fit: cover;
+      filter: brightness(0.85);
+    }
+    .about-img-badge {
+      position: absolute;
+      bottom: 24px;
+      left: 24px;
+      background: var(--red);
+      color: white;
+      font-family: 'Oswald', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 10px 18px;
+      border-radius: 4px;
+    }
+    .about-text h2 { margin-bottom: 24px; }
+    .about-text p {
+      color: #bbbbbb;
+      font-size: 1rem;
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+    .about-text p strong { color: var(--white); }
+
+    /* ── REVIEWS ── */
+    #reviews { background: var(--dark); }
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+    .review-card {
+      background: var(--card);
+      border-radius: 8px;
+      padding: 28px;
+      border-left: 3px solid var(--red);
+    }
+    .review-stars {
+      color: var(--red);
+      font-size: 1rem;
+      margin-bottom: 14px;
+    }
+    .review-text {
+      font-size: 0.95rem;
+      color: #cccccc;
+      line-height: 1.7;
+      font-style: italic;
+      margin-bottom: 16px;
+    }
+    .review-author {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .review-source {
+      font-size: 0.75rem;
+      color: #555;
+    }
+
+    /* ── FIND US ── */
+    #find-us {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: start;
+    }
+    .location-info h2 { margin-bottom: 32px; }
+    .info-block { margin-bottom: 28px; }
+    .info-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 6px;
+    }
+    .info-value {
+      font-size: 1rem;
+      color: var(--white);
+      line-height: 1.6;
+    }
+    .hours-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px 24px;
+    }
+    .hours-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      color: #bbbbbb;
+      padding: 4px 0;
+      border-bottom: 1px solid #2a2a2a;
+    }
+    .hours-row .day { color: var(--muted); }
+    .map-container {
+      border-radius: 8px;
+      overflow: hidden;
+      height: 380px;
+      background: #2a2a2a;
+    }
+    .map-container iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      filter: invert(90%) hue-rotate(180deg);
+    }
+
+    /* ── BOTTOM CTA ── */
+    #cta {
+      background: var(--red);
+      text-align: center;
+      padding: 80px 48px;
+    }
+    #cta h2 {
+      font-family: 'Oswald', sans-serif;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 700;
+      text-transform: uppercase;
+      color: white;
+      margin-bottom: 16px;
+    }
+    #cta p {
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 40px;
+    }
+    .cta-phone {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: white;
+      color: var(--red);
+      padding: 18px 40px;
+      border-radius: 4px;
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      text-decoration: none;
+      letter-spacing: 1px;
+      transition: transform 0.1s;
+    }
+    .cta-phone:hover { transform: scale(1.02); }
+    .cta-delivery {
+      display: block;
+      margin-top: 20px;
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.7);
+    }
+    .cta-delivery a { color: white; text-decoration: underline; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #0a0a0a;
+      text-align: center;
+      padding: 32px 48px;
+      font-size: 0.8rem;
+      color: #444;
+    }
+    footer span { color: #666; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 16px 24px; }
+      section, #hero { padding: 80px 24px 64px; }
+      #about, #find-us { grid-template-columns: 1fr; gap: 40px; padding: 64px 24px; }
+      .hero-stats { gap: 32px; flex-wrap: wrap; }
+      .about-img img { height: 300px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">Ace's <span>Pizza</span></a>
+    <a href="tel:7187648200" class="nav-cta">📞 Call for Pickup</a>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div>
+      <div class="hero-content">
+        <span class="hero-tag">🍕 Williamsburg, Brooklyn</span>
+        <h1>Brooklyn's Best<br/><span>Detroit-Style</span><br/>Pizza.</h1>
+        <p class="hero-sub">Thick crust, crispy cheese edge, heavy metal on the speakers. 637 Driggs Ave — open every day.</p>
+        <div class="btn-group">
+          <a href="tel:7187648200" class="btn-primary">📞 Call for Pickup — (718) 764-8200</a>
+          <a href="https://www.seamless.com/menu/aces-pizza-637-driggs-ave-brooklyn/" target="_blank" class="btn-secondary">Order Delivery →</a>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-num">4.6★</div>
+          <div class="stat-label">Google Rating</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">321+</div>
+          <div class="stat-label">Reviews</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">7</div>
+          <div class="stat-label">Days a Week</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MENU -->
+  <section id="menu">
+    <p class="section-label">What We Make</p>
+    <h2>The Menu</h2>
+    <div class="menu-grid">
+      <div class="menu-card">
+        <img src="https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?w=600&q=80" alt="Insane Pepperoni Pizza"/>
+        <div class="menu-card-body">
+          <div class="menu-item-name">🔥 Insane Pepperoni</div>
+          <div class="menu-item-desc">Detroit-style deep dish loaded with pepperoni, crispy lacey cheese edge, baked to order. The one people come back for.</div>
+          <span class="menu-tag">Customer Favorite</span>
+        </div>
+      </div>
+      <div class="menu-card">
+        <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=600&q=80" alt="Detroit Style Classic"/>
+        <div class="menu-card-body">
+          <div class="menu-item-name">🧀 Traditional Detroit</div>
+          <div class="menu-item-desc">The classic. Thick airy crust, cheese baked all the way to the edge, tangy tomato stripe on top. Simple. Perfect.</div>
+          <span class="menu-tag">The Original</span>
+        </div>
+      </div>
+      <div class="menu-card">
+        <img src="https://images.unsplash.com/photo-1548369937-47519962c11a?w=600&q=80" alt="Jalapeño Honey Cheesy Bread"/>
+        <div class="menu-card-body">
+          <div class="menu-item-name">🌶️ Jalapeño Honey Cheesy Bread</div>
+          <div class="menu-item-desc">Sweet heat meets crispy edge. Drizzled with honey, loaded with jalapeños and melted cheese. Order one. You'll order another.</div>
+          <span class="menu-tag">Must Try</span>
+        </div>
+      </div>
+    </div>
+    <p style="margin-top:40px; color:var(--muted); font-size:0.9rem;">Full menu available when you call or order delivery. <a href="tel:7187648200" style="color:var(--red);">📞 (718) 764-8200</a></p>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="about-img">
+      <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&q=80" alt="Ace's Pizza interior"/>
+      <div class="about-img-badge">Since Day One — Driggs Ave</div>
+    </div>
+    <div class="about-text">
+      <p class="section-label">Our Story</p>
+      <h2>Built for<br/>Pizza People.</h2>
+      <p>Ace's started with one mission — make the <strong>best Detroit-style pizza in Brooklyn</strong> and serve it without the attitude. Thick crust, fresh ingredients, and a room that feels like it's been there forever.</p>
+      <p>Early 90s on the walls. Heavy metal when it's quiet. Wall-to-wall people on a Saturday night. We've got bar seating, cold beer, and pizza that travels well whether you're eating in or calling ahead.</p>
+      <p><strong>No shortcuts. No freezers. Just pizza.</strong></p>
+      <a href="tel:7187648200" class="btn-primary" style="margin-top:12px;">📞 Call Ahead — (718) 764-8200</a>
+    </div>
+  </section>
+
+  <!-- REVIEWS -->
+  <section id="reviews">
+    <p class="section-label">What People Say</p>
+    <h2>321 Reviews.<br/>You'll See Why.</h2>
+    <div class="reviews-grid">
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Best pizza, best interior, best staff. Ace's is the best part of Williamsburg."</p>
+        <div class="review-author">Audrey P.</div>
+        <div class="review-source">Google Review · February 2026</div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Hands down the best pizza I've had in Brooklyn. The thick crust veggie is awesome. It was Saturday night and they were packed but still quick."</p>
+        <div class="review-author">Adam G.</div>
+        <div class="review-source">Google Review · January 2026</div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Have been here solo at the bar midweek and with a group — this place rocks either way. Might be hard to get a table when busy."</p>
+        <div class="review-author">Sylvester Z.</div>
+        <div class="review-source">Google Review · January 2026</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FIND US -->
+  <section id="find-us">
+    <div class="location-info">
+      <p class="section-label">Find Us</p>
+      <h2>Come In.<br/>We're Open.</h2>
+      <div class="info-block">
+        <div class="info-label">Address</div>
+        <div class="info-value">637 Driggs Ave<br/>Williamsburg, Brooklyn NY 11211</div>
+      </div>
+      <div class="info-block">
+        <div class="info-label">Phone</div>
+        <div class="info-value"><a href="tel:7187648200" style="color:var(--red); text-decoration:none; font-weight:600;">(718) 764-8200</a></div>
+      </div>
+      <div class="info-block">
+        <div class="info-label">Hours</div>
+        <div class="hours-grid">
+          <div class="hours-row"><span class="day">Mon–Thu</span><span>12–11 PM</span></div>
+          <div class="hours-row"><span class="day">Friday</span><span>12 PM–12 AM</span></div>
+          <div class="hours-row"><span class="day">Saturday</span><span>12 PM–12 AM</span></div>
+          <div class="hours-row"><span class="day">Sunday</span><span>12–11 PM</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="map-container">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3025.6!2d-73.9538!3d40.7168!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2s637+Driggs+Ave+Brooklyn+NY!5e0!3m2!1sen!2sus!4v1"
+        allowfullscreen=""
+        loading="lazy">
+      </iframe>
+    </div>
+  </section>
+
+  <!-- BOTTOM CTA -->
+  <section id="cta">
+    <h2>Ready to Order?</h2>
+    <p>Call ahead for pickup — skip the wait, grab your pizza fresh.</p>
+    <a href="tel:7187648200" class="cta-phone">📞 (718) 764-8200</a>
+    <span class="cta-delivery">Prefer delivery? Order on <a href="https://www.seamless.com/menu/aces-pizza-637-driggs-ave-brooklyn/" target="_blank">Seamless</a></span>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2026 Ace's Pizza · 637 Driggs Ave, Williamsburg, Brooklyn · <a href="tel:7187648200" style="color:#666;">(718) 764-8200</a></p>
+    <p style="margin-top:8px;"><span>Detroit-style pizza, made fresh, every day.</span></p>
+  </footer>
+
+</body>
+</html>
