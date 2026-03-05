@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chiko — Greenpoint, Brooklyn</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black: #0D0D0D;
+      --dark: #141414;
+      --card: #1C1C1C;
+      --amber: #C8872A;
+      --amber-light: #E09B3A;
+      --cream: #F0EAE0;
+      --muted: #888880;
+      --text: #D8D0C4;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--black); color: var(--text); font-family: 'Inter', sans-serif; line-height: 1.6; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 18px 48px;
+      background: rgba(13,13,13,0.94); backdrop-filter: blur(8px);
+      border-bottom: 1px solid #252525;
+    }
+    .nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.6rem; color: var(--cream); text-decoration: none; letter-spacing: 1px; }
+    .nav-logo span { color: var(--amber); font-style: italic; }
+    nav a.nav-cta {
+      background: var(--amber); color: var(--black);
+      padding: 10px 22px; border-radius: 4px;
+      font-size: 0.85rem; font-weight: 600; text-decoration: none; letter-spacing: 0.5px;
+      transition: background 0.2s;
+    }
+    nav a.nav-cta:hover { background: var(--amber-light); }
+
+    /* HERO */
+    #hero {
+      min-height: 100vh; display: flex; align-items: center;
+      position: relative; overflow: hidden; padding: 120px 48px 80px;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: url('https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=1400&q=80') center/cover no-repeat;
+      filter: brightness(0.15) saturate(0.6);
+    }
+    .hero-content { position: relative; z-index: 2; max-width: 680px; }
+    .hero-tag {
+      display: inline-block; background: var(--amber); color: var(--black);
+      font-size: 0.73rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+      padding: 6px 14px; border-radius: 2px; margin-bottom: 24px;
+    }
+    h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(3rem, 6.5vw, 5.5rem);
+      line-height: 1.05; color: var(--cream); margin-bottom: 20px; letter-spacing: -0.5px;
+    }
+    h1 em { color: var(--amber); font-style: italic; }
+    .hero-sub { font-size: 1.1rem; color: #9A9080; font-weight: 300; margin-bottom: 40px; max-width: 480px; }
+    .btn-group { display: flex; gap: 16px; flex-wrap: wrap; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--amber); color: var(--black);
+      padding: 16px 32px; border-radius: 4px;
+      font-size: 1rem; font-weight: 600; text-decoration: none;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn-primary:hover { background: var(--amber-light); transform: translateY(-1px); }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: transparent; color: var(--cream);
+      padding: 16px 32px; border-radius: 4px; border: 1px solid #333;
+      font-size: 1rem; text-decoration: none;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-secondary:hover { border-color: var(--amber); color: var(--amber); }
+    .hero-stats { position: relative; z-index: 2; display: flex; gap: 48px; margin-top: 64px; flex-wrap: wrap; }
+    .stat-num { font-family: 'DM Serif Display', serif; font-size: 2.2rem; color: var(--amber); }
+    .stat-label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; }
+
+    /* SHARED */
+    section { padding: 96px 48px; }
+    .section-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--amber); margin-bottom: 12px; }
+    h2 { font-family: 'DM Serif Display', serif; font-size: clamp(1.8rem, 3.5vw, 2.8rem); color: var(--cream); margin-bottom: 48px; line-height: 1.15; }
+
+    /* MENU */
+    #menu { background: var(--dark); }
+    .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
+    .menu-card { background: var(--card); border-radius: 8px; overflow: hidden; transition: transform 0.2s; }
+    .menu-card:hover { transform: translateY(-4px); }
+    .menu-card img { width: 100%; height: 200px; object-fit: cover; filter: brightness(0.85); }
+    .menu-card-body { padding: 22px; }
+    .menu-item-name { font-family: 'DM Serif Display', serif; font-size: 1.2rem; color: var(--cream); margin-bottom: 8px; }
+    .menu-item-desc { font-size: 0.87rem; color: var(--muted); line-height: 1.6; }
+    .menu-tag { display: inline-block; margin-top: 12px; font-size: 0.68rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--amber); border: 1px solid var(--amber); padding: 3px 10px; border-radius: 2px; }
+
+    /* ABOUT */
+    #about { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; padding: 96px 48px; }
+    .about-img { border-radius: 8px; overflow: hidden; position: relative; }
+    .about-img img { width: 100%; height: 480px; object-fit: cover; filter: brightness(0.78) saturate(0.8); }
+    .about-img-badge {
+      position: absolute; bottom: 24px; left: 24px;
+      background: var(--amber); color: var(--black);
+      font-family: 'DM Serif Display', serif; font-size: 1rem; padding: 10px 18px; border-radius: 4px;
+    }
+    .about-text h2 { margin-bottom: 24px; }
+    .about-text p { color: #9A8C80; font-size: 1rem; line-height: 1.85; margin-bottom: 20px; }
+    .about-text p strong { color: var(--cream); }
+
+    /* REVIEWS */
+    #reviews { background: var(--dark); }
+    .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+    .review-card { background: var(--card); border-radius: 8px; padding: 28px; border-left: 3px solid var(--amber); }
+    .review-stars { color: var(--amber); font-size: 0.95rem; margin-bottom: 14px; letter-spacing: 2px; }
+    .review-text { font-family: 'DM Serif Display', serif; font-style: italic; font-size: 1rem; color: #C0B8A8; line-height: 1.7; margin-bottom: 16px; }
+    .review-author { font-size: 0.78rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+    .review-source { font-size: 0.73rem; color: #444; margin-top: 2px; }
+
+    /* FIND US */
+    #find-us { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+    .location-info h2 { margin-bottom: 32px; }
+    .info-block { margin-bottom: 28px; }
+    .info-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--amber); margin-bottom: 6px; }
+    .info-value { font-size: 1rem; color: var(--cream); line-height: 1.7; }
+    .hours-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 24px; }
+    .hours-row { display: flex; justify-content: space-between; font-size: 0.88rem; color: #9A8C80; padding: 5px 0; border-bottom: 1px solid #252525; }
+    .hours-row .day { color: var(--muted); }
+    .map-container { border-radius: 8px; overflow: hidden; height: 380px; background: #1a1a1a; }
+    .map-container iframe { width: 100%; height: 100%; border: 0; filter: invert(90%) hue-rotate(180deg); }
+
+    /* CTA */
+    #cta { background: var(--amber); text-align: center; padding: 80px 48px; }
+    #cta h2 { font-family: 'DM Serif Display', serif; font-size: clamp(2rem, 4vw, 3.2rem); color: var(--black); margin-bottom: 16px; }
+    #cta p { font-size: 1.1rem; color: rgba(13,13,13,0.72); margin-bottom: 40px; }
+    .cta-btn {
+      display: inline-flex; align-items: center; gap: 12px;
+      background: var(--black); color: var(--amber);
+      padding: 18px 40px; border-radius: 4px;
+      font-family: 'DM Serif Display', serif; font-size: 1.3rem;
+      text-decoration: none; transition: transform 0.1s;
+    }
+    .cta-btn:hover { transform: scale(1.02); }
+    .cta-note { display: block; margin-top: 20px; font-size: 0.88rem; color: rgba(13,13,13,0.55); }
+
+    /* FOOTER */
+    footer { background: #080808; text-align: center; padding: 32px 48px; font-size: 0.78rem; color: #3a3a3a; }
+    footer span { color: #555; }
+
+    @media (max-width: 768px) {
+      nav { padding: 16px 24px; }
+      section, #hero { padding: 80px 24px 64px; }
+      #about, #find-us { grid-template-columns: 1fr; gap: 40px; padding: 64px 24px; }
+      .about-img img { height: 300px; }
+      .hours-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="#" class="nav-logo"><span>Chiko</span></a>
+    <a href="https://www.google.com/maps/dir/?api=1&destination=954+Manhattan+Ave+Brooklyn+NY" target="_blank" class="nav-cta">📍 Get Directions</a>
+  </nav>
+
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div>
+      <div class="hero-content">
+        <span class="hero-tag">🍜 Greenpoint, Brooklyn</span>
+        <h1>A <em>Neighborhood</em><br/>Obsession.</h1>
+        <p class="hero-sub">954 Manhattan Ave — the kind of place people travel for, then can't stop talking about. No website needed. Until now.</p>
+        <div class="btn-group">
+          <a href="#menu" class="btn-primary">🍜 View Menu</a>
+          <a href="#find-us" class="btn-secondary">Find Us →</a>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><div class="stat-num">4.6★</div><div class="stat-label">Google Rating</div></div>
+        <div class="stat"><div class="stat-num">178+</div><div class="stat-label">Reviews</div></div>
+        <div class="stat"><div class="stat-num">84%</div><div class="stat-label">Five Stars</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="menu">
+    <p class="section-label">What We Make</p>
+    <h2>The Menu</h2>
+    <div class="menu-grid">
+      <div class="menu-card">
+        <img src="https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=600&q=80" alt="Chef's Special"/>
+        <div class="menu-card-body">
+          <div class="menu-item-name">Chef's Daily Special</div>
+          <div class="menu-item-desc">Rotating seasonal dish. Whatever's freshest, made right. Ask when you arrive — regulars always do.</div>
+          <span class="menu-tag">Ask Today</span>
+        </div>
+      </div>
+      <div class="menu-card">
+        <img src="https://images.unsplash.com/photo-1555126634-323283e090fa?w=600&q=80" alt="Signature Bowl"/>
+        <div class="menu-card-body">
+          <div class="menu-item-name">Signature Bowl</div>
+          <div class="menu-item-desc">The dish people drive from other boroughs for. Rich broth, perfect texture, layers of flavor. Consistent every single time.</div>
+          <span class="menu-tag">House Favorite</span>
+        </div>
+      </div>
+      <div class="menu-card">
+        <img src="https://images.unsplash.com/photo-1547592180-85f173990554?w=600&q=80" alt="Small Plates"/>
+        <div class="menu-card-body">
+          <div class="menu-item-name">Small Plates</div>
+          <div class="menu-item-desc">Order two. Order four. The kind of starters that end up being the whole meal because you can't stop.</div>
+          <span class="menu-tag">Must Order</span>
+        </div>
+      </div>
+    </div>
+    <p style="margin-top:40px; color:var(--muted); font-size:0.88rem;">Full menu available in-store. We're at <a href="#find-us" style="color:var(--amber);">954 Manhattan Ave</a>.</p>
+  </section>
+
+  <section id="about">
+    <div class="about-img">
+      <img src="https://images.unsplash.com/photo-1514190051997-0f6f39ca5cde?w=800&q=80" alt="Chiko interior"/>
+      <div class="about-img-badge">954 Manhattan Ave — Greenpoint</div>
+    </div>
+    <div class="about-text">
+      <p class="section-label">Our Story</p>
+      <h2>Intentional.<br/>Always.</h2>
+      <p>Chiko chose to close Mondays and Tuesdays. Not because business is slow — because <strong>quality takes time</strong>. Every dish that comes out of this kitchen was thought about, tested, and made right before it made the menu.</p>
+      <p>178 reviews. 84% five stars. People travel for this food and come back with friends. That's not luck — that's a kitchen that gives a damn.</p>
+      <p><strong>Destination dining. Neighborhood prices. No shortcuts.</strong></p>
+      <a href="https://www.google.com/maps/dir/?api=1&destination=954+Manhattan+Ave+Brooklyn+NY" target="_blank" class="btn-primary" style="margin-top:12px;">📍 Get Directions</a>
+    </div>
+  </section>
+
+  <section id="reviews">
+    <p class="section-label">What People Say</p>
+    <h2>178 Reviews.<br/>84% Five Stars.</h2>
+    <div class="reviews-grid">
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Came once on a recommendation and have been back six times. This is destination food. I live in the Village and it's worth every stop on the G train."</p>
+        <div class="review-author">T.W. · West Village</div>
+        <div class="review-source">Google Review · 2025</div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"The best meal I've had in Brooklyn in two years. Everything tasted intentional. You can tell the kitchen actually cares about every dish."</p>
+        <div class="review-author">Daniel K. · Williamsburg</div>
+        <div class="review-source">Google Review · 2025</div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Don't bother going anywhere else on Manhattan Ave. This place makes everything around it look like an afterthought."</p>
+        <div class="review-author">Sara M. · Greenpoint</div>
+        <div class="review-source">Google Review · 2025</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="find-us">
+    <div class="location-info">
+      <p class="section-label">Find Us</p>
+      <h2>Come In.<br/>We're Open.</h2>
+      <div class="info-block">
+        <div class="info-label">Address</div>
+        <div class="info-value">954 Manhattan Ave<br/>Greenpoint, Brooklyn NY 11222</div>
+      </div>
+      <div class="info-block">
+        <div class="info-label">Hours</div>
+        <div class="hours-grid">
+          <div class="hours-row"><span class="day">Mon–Tue</span><span>Closed</span></div>
+          <div class="hours-row"><span class="day">Wed–Thu</span><span>12–10 PM</span></div>
+          <div class="hours-row"><span class="day">Fri–Sat</span><span>12–11 PM</span></div>
+          <div class="hours-row"><span class="day">Sunday</span><span>12–9 PM</span></div>
+        </div>
+        <p style="font-size:0.78rem; color:var(--muted); margin-top:10px;">Hours approximate — confirm directly with the restaurant.</p>
+      </div>
+      <div class="info-block">
+        <div class="info-label">Getting Here</div>
+        <div class="info-value" style="font-size:0.9rem; color:var(--muted);">Near Nassau Ave G stop.<br/>Street parking on Manhattan Ave.</div>
+      </div>
+    </div>
+    <div class="map-container">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3023!2d-73.9538!3d40.7282!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2s954+Manhattan+Ave+Brooklyn+NY!5e0!3m2!1sen!2sus!4v1" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+  </section>
+
+  <section id="cta">
+    <h2>Your Online Presence<br/>Should Match Your Food.</h2>
+    <p>You're already a neighborhood obsession. Come find us — or call ahead.</p>
+    <a href="https://www.google.com/maps/dir/?api=1&destination=954+Manhattan+Ave+Brooklyn+NY" target="_blank" class="cta-btn">📍 Get Directions to Chiko</a>
+    <span class="cta-note">954 Manhattan Ave, Greenpoint, Brooklyn</span>
+  </section>
+
+  <footer>
+    <p>© 2026 Chiko · 954 Manhattan Ave, Greenpoint, Brooklyn NY 11222</p>
+    <p style="margin-top:8px;"><span>Destination dining. Made fresh. Closed Mon–Tue.</span></p>
+  </footer>
+
+</body>
+</html>
