@@ -213,49 +213,127 @@
   }
 
   /* ═══════════════════════════════════
-     WHAT WE BAKE  (menu style, no icons)
+     SIGNATURE COLLECTION
   ═══════════════════════════════════ */
-  .bake { padding: 120px 0; background: var(--bg); }
-  .bake-header { margin-bottom: 72px; }
-  .bake-list {
+  .sig { padding: 120px 0; background: var(--bg); }
+  .sig-header { margin-bottom: 80px; }
+  .sig-item {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: 64px;
-  }
-  .bake-item {
-    padding: 28px 0;
+    grid-template-columns: 1.1fr 1fr;
+    min-height: 420px;
     border-top: 1px solid var(--rule);
-    display: grid;
-    grid-template-columns: 1fr auto;
-    align-items: baseline;
-    gap: 16px;
-    transition: opacity .2s;
   }
-  .bake-item:hover { opacity: .7; }
-  .bake-name {
-    font-family: var(--serif);
-    font-size: 1.2rem;
-    font-weight: 400;
-    color: var(--ink);
-    margin-bottom: 5px;
+  .sig-item:last-child { border-bottom: 1px solid var(--rule); }
+  .sig-img {
+    overflow: hidden;
+    background: #d4c0b0;
+    position: relative;
   }
-  .bake-desc {
-    font-size: .8rem;
-    font-weight: 400;
-    color: var(--muted);
-    letter-spacing: .01em;
+  .sig-img img {
+    transition: transform .7s var(--ease);
   }
-  .bake-tag {
-    font-size: .7rem;
+  .sig-item:hover .sig-img img { transform: scale(1.04); }
+  .sig-body {
+    padding: 56px 64px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0;
+  }
+  .sig-index {
+    font-size: .68rem;
     font-weight: 600;
-    letter-spacing: .1em;
+    letter-spacing: .18em;
     text-transform: uppercase;
     color: var(--warm);
-    white-space: nowrap;
+    margin-bottom: 20px;
   }
-  .bake-cta { margin-top: 64px; }
-  @media (max-width:640px) {
-    .bake-list { grid-template-columns: 1fr; }
+  .sig-title {
+    font-family: var(--serif);
+    font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+    font-weight: 400;
+    color: var(--ink);
+    letter-spacing: -.02em;
+    line-height: 1.15;
+    margin-bottom: 16px;
+  }
+  .sig-desc {
+    font-size: .9rem;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 28px;
+    max-width: 320px;
+  }
+  .sig-link {
+    font-size: .75rem;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ink);
+    border-bottom: 1px solid var(--ink);
+    padding-bottom: 2px;
+    display: inline-block;
+    transition: color .2s, border-color .2s;
+  }
+  .sig-link:hover { color: var(--warm); border-color: var(--warm); }
+  @media (max-width:760px) {
+    .sig-item { grid-template-columns: 1fr; min-height: auto; }
+    .sig-img { height: 280px; }
+    .sig-body { padding: 36px 28px; }
+  }
+
+  /* ═══════════════════════════════════
+     THE CEREMONIA STANDARD
+  ═══════════════════════════════════ */
+  .standard {
+    padding: 120px 0;
+    background: #f0e6da;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .standard-header { margin-bottom: 80px; }
+  .standard-cols {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 0;
+  }
+  .standard-col {
+    padding: 0 56px 0 0;
+    border-right: 1px solid var(--rule);
+  }
+  .standard-col:last-child { border-right: none; padding-right: 0; }
+  .standard-col + .standard-col { padding-left: 56px; }
+  .standard-num {
+    font-family: var(--serif);
+    font-size: .75rem;
+    font-weight: 400;
+    color: var(--warm);
+    letter-spacing: .1em;
+    margin-bottom: 28px;
+    display: block;
+  }
+  .standard-col h3 {
+    font-family: var(--serif);
+    font-size: clamp(1.3rem, 2vw, 1.6rem);
+    font-weight: 400;
+    color: var(--ink);
+    letter-spacing: -.02em;
+    line-height: 1.2;
+    margin-bottom: 14px;
+  }
+  .standard-col h3 em { font-style: italic; }
+  .standard-col p {
+    font-size: .85rem;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+  @media (max-width:680px) {
+    .standard-cols { grid-template-columns: 1fr; gap: 48px; }
+    .standard-col { border-right: none; border-bottom: 1px solid var(--rule); padding: 0 0 48px; }
+    .standard-col:last-child { border-bottom: none; padding-bottom: 0; }
+    .standard-col + .standard-col { padding-left: 0; }
   }
 
   /* ═══════════════════════════════════
@@ -570,60 +648,90 @@
   </div>
 </section>
 
-<!-- ── WHAT WE BAKE ── -->
-<section class="bake" id="bake">
+<!-- ── SIGNATURE COLLECTION ── -->
+<section class="sig" id="bake">
   <div class="wrap">
-    <div class="bake-header">
-      <span class="eyebrow">What We Make</span>
-      <h2 class="display">A cake for every occasion.</h2>
-      <p class="lead">Everything made in-house. Designed to your brief.</p>
+    <div class="sig-header">
+      <span class="eyebrow">Signature Collection</span>
+      <h2 class="display">Made for your<br><em>most important moments.</em></h2>
     </div>
-    <div class="bake-list">
-      <div class="bake-item">
-        <div>
-          <div class="bake-name">Wedding Cakes</div>
-          <div class="bake-desc">Tiered, custom, built for your day.</div>
-        </div>
-        <span class="bake-tag">Custom</span>
+  </div>
+  <div style="max-width:var(--max);margin:0 auto;padding:0 32px;">
+
+    <div class="sig-item">
+      <div class="sig-img">
+        <img src="https://images.unsplash.com/photo-1535141192574-5d4897c12636?w=900&q=82&fit=crop" alt="Wedding cake" loading="lazy" onerror="this.style.display='none'" />
       </div>
-      <div class="bake-item">
-        <div>
-          <div class="bake-name">Birthday Cakes</div>
-          <div class="bake-desc">Milestone-worthy. No templates.</div>
-        </div>
-        <span class="bake-tag">Custom</span>
-      </div>
-      <div class="bake-item">
-        <div>
-          <div class="bake-name">Dessert Tables</div>
-          <div class="bake-desc">Curated spreads, styled for your event.</div>
-        </div>
-        <span class="bake-tag">Event</span>
-      </div>
-      <div class="bake-item">
-        <div>
-          <div class="bake-name">Cupcakes & Pastries</div>
-          <div class="bake-desc">Perfect for favors and smaller gatherings.</div>
-        </div>
-        <span class="bake-tag">Any size</span>
-      </div>
-      <div class="bake-item">
-        <div>
-          <div class="bake-name">Corporate Orders</div>
-          <div class="bake-desc">Branded cakes and bulk dessert packages.</div>
-        </div>
-        <span class="bake-tag">Bulk</span>
-      </div>
-      <div class="bake-item">
-        <div>
-          <div class="bake-name">Dietary Options</div>
-          <div class="bake-desc">Gluten-free, vegan — available on request.</div>
-        </div>
-        <span class="bake-tag">On request</span>
+      <div class="sig-body">
+        <span class="sig-index">01</span>
+        <div class="sig-title">Wedding Cakes</div>
+        <p class="sig-desc">Tiered, custom, built to anchor your reception.</p>
+        <a href="#quote" class="sig-link">Inquire →</a>
       </div>
     </div>
-    <div class="bake-cta">
-      <a href="#quote" class="btn btn-dark">Start Your Order →</a>
+
+    <div class="sig-item">
+      <div class="sig-img">
+        <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=900&q=82&fit=crop" alt="Celebration cake" loading="lazy" onerror="this.style.display='none'" />
+      </div>
+      <div class="sig-body">
+        <span class="sig-index">02</span>
+        <div class="sig-title">Celebration Cakes</div>
+        <p class="sig-desc">Made for milestones. Every detail considered.</p>
+        <a href="#quote" class="sig-link">Inquire →</a>
+      </div>
+    </div>
+
+    <div class="sig-item">
+      <div class="sig-img">
+        <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?w=900&q=82&fit=crop" alt="Dessert table" loading="lazy" onerror="this.style.display='none'" />
+      </div>
+      <div class="sig-body">
+        <span class="sig-index">03</span>
+        <div class="sig-title">Dessert Tables</div>
+        <p class="sig-desc">A full spread, styled and coordinated for your event.</p>
+        <a href="#quote" class="sig-link">Inquire →</a>
+      </div>
+    </div>
+
+    <div class="sig-item">
+      <div class="sig-img">
+        <img src="https://images.unsplash.com/photo-1486427944299-d1955d23e34d?w=900&q=82&fit=crop" alt="Cookies and pastries" loading="lazy" onerror="this.style.display='none'" />
+      </div>
+      <div class="sig-body">
+        <span class="sig-index">04</span>
+        <div class="sig-title">Cookies & Pastries</div>
+        <p class="sig-desc">Small bakes, serious craft. Perfect for favors.</p>
+        <a href="#quote" class="sig-link">Inquire →</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── THE CEREMONIA STANDARD ── -->
+<section class="standard">
+  <div class="wrap">
+    <div class="standard-header">
+      <span class="eyebrow">The Ceremonia Standard</span>
+      <h2 class="display">What every order<br><em>is built on.</em></h2>
+    </div>
+    <div class="standard-cols">
+      <div class="standard-col">
+        <span class="standard-num">I</span>
+        <h3>Design-first<br><em>finish.</em></h3>
+        <p>Every detail is made to photograph.</p>
+      </div>
+      <div class="standard-col">
+        <span class="standard-num">II</span>
+        <h3>Clear<br><em>timelines.</em></h3>
+        <p>Always know what's next. Zero surprises.</p>
+      </div>
+      <div class="standard-col">
+        <span class="standard-num">III</span>
+        <h3>Ready<br><em>when you are.</em></h3>
+        <p>Pickup and delivery, confirmed and on time.</p>
+      </div>
     </div>
   </div>
 </section>
